@@ -12,6 +12,7 @@ int main( int argc, char* argv[] )
 {
   Red* my_red = new Red();
   my_red->algo();
+  delete my_red;
   return 0;
 }
 

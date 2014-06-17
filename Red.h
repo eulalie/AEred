@@ -12,6 +12,7 @@
 #include <vector>
 #include <time.h>
 #include <string>
+#include <math.h>
 
 //Project Files
 //#include "Red.h"
@@ -34,10 +35,10 @@ class Red
   virtual ~Red(void);
 
     //Accessors: getters
-  inline const vector< vector<int> >& get_poblacion( void ) const;
-  inline const vector< vector<int> >& get_amigos( void ) const;
+  inline const vector< vector<int>* >* get_poblacion( void ) const;
+  inline const vector< vector<int>* >* get_amigos( void ) const;
   inline const int get_nb_usarios( void) const;
-
+  inline const int get_tam_pob( void) const;
     //Accessors: setters
 
     //Operators
@@ -67,25 +68,27 @@ class Red
     **/
 
     //Protected Methods
-  double fitness(const vector<int>& ind);
+  double fitness(const vector<int>* ind);
+  vector< vector<int>* >* seleccion();
 
     //Protected Attributes
-  vector<vector<int> > amigos;
-  vector<vector<int> > poblacion;
+  vector<vector<int>* >* amigos;
+  vector<vector<int>* >* poblacion;
   int nb_usarios;
   int tam_pob;
+  double densidad;
 
 
 };
 
 
 //Getters' definitions
-inline const vector< vector<int> >& Red::get_poblacion( void ) const
+inline const vector< vector<int>* >* Red::get_poblacion( void ) const
 {
   return poblacion;
 }
 
-inline const vector< vector<int> >& Red::get_amigos( void ) const
+inline const vector< vector<int>* >* Red::get_amigos( void ) const
 {
   return amigos;
 }
@@ -93,6 +96,11 @@ inline const vector< vector<int> >& Red::get_amigos( void ) const
 inline const int Red::get_nb_usarios( void) const
 {
   return nb_usarios;
+}
+
+inline const int Red::get_tam_pob( void) const
+{
+  return tam_pob;
 }
 //Operators' definitions
 
