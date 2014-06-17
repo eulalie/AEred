@@ -14,7 +14,7 @@
 #include <string>
 
 //Project Files
-#include "Red.h"
+//#include "Red.h"
 
 // Class declarations
 
@@ -34,14 +34,17 @@ class Red
   virtual ~Red(void);
 
     //Accessors: getters
-    
+  inline const vector< vector<int> >& get_poblacion( void ) const;
+  inline const vector< vector<int> >& get_amigos( void ) const;
+  inline const int get_nb_usarios( void) const;
+
     //Accessors: setters
 
     //Operators
 
     //Public Methods
 
-  //void print_rubik(void);
+  int algo(void);
   //vector<Cubitos*>* give_face(int i);
 
     //Public Attributes
@@ -64,11 +67,11 @@ class Red
     **/
 
     //Protected Methods
-  //vector< vector<int> >* init_poblacion(int tam_pob);
+  double fitness(const vector<int>& ind);
 
     //Protected Attributes
-  vector<vector<int> > Amigos;
-  vector<vector<int> > Poblacion;
+  vector<vector<int> > amigos;
+  vector<vector<int> > poblacion;
   int nb_usarios;
   int tam_pob;
 
@@ -77,7 +80,20 @@ class Red
 
 
 //Getters' definitions
+inline const vector< vector<int> >& Red::get_poblacion( void ) const
+{
+  return poblacion;
+}
 
+inline const vector< vector<int> >& Red::get_amigos( void ) const
+{
+  return amigos;
+}
+
+inline const int Red::get_nb_usarios( void) const
+{
+  return nb_usarios;
+}
 //Operators' definitions
 
 //Inline functions' definition

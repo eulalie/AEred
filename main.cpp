@@ -10,7 +10,8 @@
 
 int main( int argc, char* argv[] )
 {
-  Red* mi_red = new Red();
+  Red* my_red = new Red();
+  my_red->algo();
   return 0;
 }
 
