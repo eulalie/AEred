@@ -69,7 +69,9 @@ class Red
 
     //Protected Methods
   double fitness(const vector<int>* ind);
-  vector< vector<int>* >* seleccion();
+  vector<int>* seleccion();
+  vector< vector<int>* >* recombinacion(const int ind1, const int ind2);
+  vector<int>* mutacion(const int ind);
 
     //Protected Attributes
   vector<vector<int>* >* amigos;

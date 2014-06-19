@@ -76,6 +76,7 @@ Red::Red(void)
   // visualisacion de poblacion y amigos
   for(int i = 0; i<10;i++)
     {
+          cout <<i<<": ";
           for(int j=0; j<4;j++)
             {
               cout <<poblacion->at(i)->at(j);
@@ -120,15 +121,28 @@ int Red::algo()
   cout <<": "<< fitness(get_poblacion().at(1))<<endl;
   */
 
-  vector< vector<int>* >* sel = seleccion();
-  for(int i=0; i<sel->size(); i++){
-    for(int j=0; j<get_nb_usarios(); j++){
-      cout <<sel->at(i)->at(j);
-  }
+  cout <<"seleccion:"<<endl;
+  vector<int>* sel = seleccion();
+  for(int i=0; i<sel->size(); i++)
+    cout <<sel->at(i)<<" ";
   cout <<endl;
+
+  cout <<"recombinacion:"<<endl;
+  vector< vector<int>* >* hijos = recombinacion(sel->at(0),sel->at(1));
+  for(int i=0; i<hijos->size(); i++){
+    for(int j=0; j<get_nb_usarios(); j++){
+      cout <<hijos->at(i)->at(j);
+    }
+    cout <<endl;
   }
-  
-  //delete sel;
+
+  cout <<"mutacion:"<<endl;
+  vector<int>* hijo_m = mutacion(sel->at(0));
+  for(int i=0; i<hijo_m->size(); i++)
+    cout <<hijo_m->at(i);
+  cout <<endl;
+
+  delete sel;
   return 1;
 }
 
@@ -173,8 +187,9 @@ double Red::fitness(const vector<int>* ind){
   return fitness;
 }
 
-
-vector< vector<int>* >* Red::seleccion( void )
+/* Este metodo vuelve los indexos de los individuos seleccionados
+*/
+vector<int>* Red::seleccion( void )
 {
   //tabla de proporcion (ruleta)
   double fi[get_tam_pob()];
@@ -192,13 +207,13 @@ vector< vector<int>* >* Red::seleccion( void )
   //cout <<endl;
 
   //seleccion
-  vector< vector<int>* >* seleccionados = new vector< vector<int>* >;
+  vector<int>* seleccionados = new vector<int>;
   for(int i=0; i<get_tam_pob()/2; i++){
     double p = rand()/float(RAND_MAX);
     int ind=get_tam_pob()-1;
     while(ind !=0 && p<fi[ind-1])
       ind --;
-    seleccionados->push_back(get_poblacion()->at(ind));
+    seleccionados->push_back(ind);
   
     //cout <<p<<":"<<ind<<endl;
   }
@@ -206,6 +221,51 @@ vector< vector<int>* >* Red::seleccion( void )
   return seleccionados;  
 }
 
+/* Vuelve un vector de dos hijos, que son la combinacion des los individuos seleccionados ind1 y ind2.
+*/
+vector< vector<int>*>* Red::recombinacion(const int ind1, const int ind2)
+{
+  // punto de recombinacion
+  int r = rand()%(get_nb_usarios()-2) +1;
+  //cout <<"r = "<<r<<endl;
 
+  // creacion de los hijos
+  vector<int>* hijo1 = new vector<int>;
+  vector<int>* hijo2 = new vector<int>;
+  for(int i=0; i<get_nb_usarios(); i++){
+    if(i<=r){
+      hijo1->push_back(get_poblacion()->at(ind1)->at(i));
+      hijo2->push_back(get_poblacion()->at(ind2)->at(i));
+    }
+    else{
+      hijo1->push_back(get_poblacion()->at(ind2)->at(i));
+      hijo2->push_back(get_poblacion()->at(ind1)->at(i));
+    }
+  }
+  vector< vector<int>* >* hijos = new vector< vector<int>* >;
+  hijos->push_back(hijo1);
+  hijos->push_back(hijo2);
+
+  return hijos;  
+}
+
+/* Operator de mutacion, vuelve un hijo
+*/
+vector<int>* Red::mutacion(const int ind)
+{
+  //punto de mutacion
+  int r = rand()%get_nb_usarios();
+  cout <<"r_m: "<<r<<endl;
+
+  vector<int>* hijo = new vector<int>;
+  for(int i=0; i<get_nb_usarios(); i++){
+    if(i!=r)
+      hijo->push_back(get_poblacion()->at(ind)->at(i));
+    else
+      hijo->push_back(1 - get_poblacion()->at(ind)->at(i));
+  }
+
+  return hijo;
+}
 
 //Non inline accessors
